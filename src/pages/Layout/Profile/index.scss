@@ -1,0 +1,23 @@
+.profileContent{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+    .barChart, .pieChart{
+        height: 240px;
+        width: 270px;
+    }
+
+    div.ant-card{
+        h4{
+            font-size:40px;
+        }
+        .avatar{
+            width:140px;
+            height: 130px;
+            border-radius: 50%;
+        }
+    }
+}
+
+

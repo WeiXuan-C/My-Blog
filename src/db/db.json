@@ -1,0 +1,84 @@
+{
+  "user": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "1366768Aa.",
+      "token": "1",
+      "role": "admin",
+      "avatar": "ace"
+    },
+    {
+      "id": "2",
+      "username": "simpo",
+      "password": "1366768Aa.",
+      "token": "2",
+      "role": "admin",
+      "avatar": "lufi"
+    },
+    {
+      "id": ":r26:",
+      "username": "monster",
+      "password": "aaaaAAAA1!",
+      "token": ":r26:",
+      "role": "admin",
+      "avatar": "sabo"
+    }
+  ],
+  "article": [
+    {
+      "Title": "tiktok gudaaa",
+      "ArticleType": "News Articles",
+      "content": "<p>mmmmmmmmmm</p>",
+      "id": "be50"
+    },
+    {
+      "id": "ddba",
+      "Title": "adadad",
+      "ArticleType": "News Articles",
+      "content": "<p>adaddddddddddddddd</p>"
+    },
+    {
+      "id": "9151",
+      "Title": "adad",
+      "ArticleType": "Education and Academic Articles",
+      "content": "<p>chiann</p>"
+    },
+    {
+      "id": "dfed",
+      "Title": "spam1",
+      "ArticleType": "News Articles",
+      "content": "<p>adadadad</p>"
+    },
+    {
+      "id": "138d",
+      "Title": "dada",
+      "ArticleType": "News Articles",
+      "content": "<p>dada</p>"
+    },
+    {
+      "Title": "simppoo",
+      "ArticleType": "News Articles",
+      "content": "<p>adadaa</p>",
+      "id": "380a"
+    },
+    {
+      "id": "5fa2",
+      "Title": "simpo",
+      "ArticleType": "Feature Articles",
+      "content": "<p>adada</p>"
+    },
+    {
+      "id": "9600",
+      "Title": "malaysia",
+      "ArticleType": "Travel and Exploration Articles",
+      "content": "<p><strong>gooood<span class=\"ql-cursor\">﻿</span></strong></p>"
+    },
+    {
+      "id": "1161",
+      "Title": "simpo",
+      "ArticleType": "Travel and Exploration Articles",
+      "content": "<p>1</p>"
+    }
+  ]
+}

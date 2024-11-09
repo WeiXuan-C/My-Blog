@@ -1,0 +1,23 @@
+div .ant-card{
+    width: 600px;
+    border-color: black;
+    background-color: rgb(83, 79, 79);
+    box-shadow: 3px 4px rgba(28, 28, 28, 0.4);
+
+    .ant-card-body{
+        padding-right: 40px;
+    }
+    .ant-card-head{
+        margin: 15px 30px;
+        padding: 10px 0 0 15px;
+        .ant-card-head-title{
+            font-size: larger;
+            color:rgb(219, 219, 215);
+        }
+    }
+    
+    [title="Password"],[title="Username"]{
+        color:rgb(219, 219, 215);
+    }
+}
+

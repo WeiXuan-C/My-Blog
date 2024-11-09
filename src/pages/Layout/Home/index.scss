@@ -1,0 +1,38 @@
+.ant-layout{
+    height: 100vh;
+    background-color: rgb(30,41,59);
+
+    .demo-logo-vertical{
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        h4{
+            color:rgb(219, 219, 215);
+            font-size: 26px;
+        }
+    }
+
+    header{
+        text-align: end;
+        color:rgb(219, 219, 215);
+        background-color: #001529;
+        .user{
+            font-size: 15px;
+            span{
+                padding: 0 5px;
+            }
+        }
+        button{
+            margin: 0 20px;
+        }
+    }
+    main div{
+        color:rgb(219, 219, 215);
+        background-color: rgb(83, 79, 79);
+        height: 96%;
+    }
+    .ant-layout-sider-zero-width-trigger{
+        margin-top: 4px;
+    }
+}

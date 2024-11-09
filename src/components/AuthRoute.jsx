@@ -1,3 +1,5 @@
+//有token -> 正常跳转
+//无token -> 返回登录
 import { Navigate } from 'react-router-dom'
 import {getToken} from '../utils'
 

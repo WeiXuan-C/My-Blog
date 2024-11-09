@@ -11,7 +11,9 @@ const Login = () => {
   const navigate = useNavigate()
 
   const onFinish = (values) => {
+    //触发异步action
     dispatch(loginHandler(values))
+    //跳转到首页
     setTimeout(() => {
       navigate('/')
     }, 15)
@@ -60,6 +62,7 @@ const Login = () => {
           <Form.Item
             label="Password"
             name="password"
+            //多条校验逻辑 第一条通过之后再校验第二条
             rules={[
               {
                 required: true,

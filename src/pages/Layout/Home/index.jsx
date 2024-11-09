@@ -16,7 +16,8 @@ const Home = () => {
   const userName = useSelector(state => state.user.userInfo.username)
 
   useEffect(()=>{
-    message.success('LOGIN SUCCESS')
+    //提示用户登入成功
+    message.success('Welcome Back')
     dispatch(fecthUserInfo())
   },[dispatch])
 

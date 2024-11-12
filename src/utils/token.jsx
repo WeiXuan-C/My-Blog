@@ -9,8 +9,8 @@ function getToken () {
     return localStorage.getItem(TOKEN)
 }
 
-function removeToken (params) {
-    return localStorage.removeItem(TOKEN,params)
+function removeToken () {
+    return localStorage.removeItem(TOKEN)
 }
 
 export {

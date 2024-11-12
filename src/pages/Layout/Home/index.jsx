@@ -13,7 +13,8 @@ const Home = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const userName = useSelector(state => state.user.userInfo.username)
+  const userName = useSelector((state) => state.user.userInfo?.username)
+  console.log(userName)
 
   useEffect(()=>{
     //提示用户登入成功
@@ -68,7 +69,7 @@ const Home = () => {
           console.log(collapsed, type);
         }}
       >
-        <div className="demo-logo-vertical"><h4>SIMPO BLOG</h4></div>
+        <div className="demo-logo-vertical"><h4>MyBlog</h4></div>
         <Menu theme="dark" mode="inline" selectedKeys={location.pathname} onClick={onSideBarClick} items={items} />
       </Sider>
       <Layout>

@@ -2,7 +2,7 @@ import { UploadOutlined, UserOutlined, VideoCameraOutlined ,LoginOutlined, UserA
 import { Layout, Menu, theme, Button, Popconfirm, message } from 'antd';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fecthUserInfo,clearUserInfo } from '../../../store/modules/user';
+import { fetchUserInfo,clearUserInfo } from '../../../store/modules/user';
 import './index.scss'
 import { useEffect } from 'react';
 
@@ -13,13 +13,13 @@ const Home = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const userName = useSelector((state) => state.user.userInfo?.username)
+  const userName = useSelector((state) => state.user.userInfo.username)
   console.log(userName)
 
   useEffect(()=>{
     //提示用户登入成功
     message.success('Welcome Back')
-    dispatch(fecthUserInfo())
+    dispatch(fetchUserInfo())
   },[dispatch])
 
   const onSideBarClick = (route) => {

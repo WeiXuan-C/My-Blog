@@ -4,7 +4,7 @@
       "id": "1",
       "username": "admin",
       "password": "1366768Aa.",
-      "token": "1",
+      "token": "1wx",
       "role": "admin",
       "avatar": "ace"
     },
@@ -12,7 +12,7 @@
       "id": "2",
       "username": "simpo",
       "password": "1366768Aa.",
-      "token": "2",
+      "token": "2wx",
       "role": "admin",
       "avatar": "lufi"
     },
@@ -20,7 +20,7 @@
       "id": ":r26:",
       "username": "monster",
       "password": "aaaaAAAA1!",
-      "token": ":r26:",
+      "token": ":r26wx",
       "role": "admin",
       "avatar": "sabo"
     }

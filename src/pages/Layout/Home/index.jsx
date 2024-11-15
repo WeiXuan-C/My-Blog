@@ -1,10 +1,12 @@
 import { UploadOutlined, UserOutlined, VideoCameraOutlined ,LoginOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, Button, Popconfirm, message } from 'antd';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo,clearUserInfo } from '../../../store/modules/user';
 import './index.scss'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import logo from './assets/aurax-logo.png'
+import {Tooltip} from 'antd'
 
 const { Header, Content, Sider } = Layout;
 
@@ -14,7 +16,7 @@ const Home = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const userName = useSelector((state) => state.user.userInfo.username)
-  console.log(userName)
+  const [collapsed, setCollapsed] = useState(false)
 
   useEffect(()=>{
     //提示用户登入成功
@@ -24,16 +26,25 @@ const Home = () => {
 
   const onSideBarClick = (route) => {
     navigate(route.key)
-  }
+    }
 
   const logOutHandler= () => {
     dispatch(clearUserInfo())
     navigate('/login')
   }
 
+  //Last updated..
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleString())
+  useEffect( () => {
+    const timer = setInterval( () => {
+      setCurrentTime(new Date().toLocaleString())
+    }, 60000)
+    return () => clearInterval(timer)
+  }, [])
+
   const items = [
     {
-      label:'Profile',
+      label:'Dashboard',
       key:'/',
       icon:<UserOutlined/>
     },
@@ -57,31 +68,40 @@ const Home = () => {
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
+
   return (
     <Layout>
+
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
+        collapsed={collapsed}
+        onCollapse={(collapsed) => {
+          setCollapsed(collapsed)
         }}
       >
-        <div className="demo-logo-vertical"><h4>MyBlog</h4></div>
+        <div className="demo-logo-vertical">
+          <Link to="/">
+            <img src={logo} alt="AuraX" style={{
+              height: "60px",
+              width: "auto",
+              }}
+            />
+            </Link>
+            <h4>AuraX</h4>
+        </div>
         <Menu theme="dark" mode="inline" selectedKeys={location.pathname} onClick={onSideBarClick} items={items} />
       </Sider>
+
       <Layout>
         <Header
           style={{
             padding: 0,
           }}
         >
-          <span className='user'>
-          <UserOutlined />
-          {userName || ''}
-          </span>
+          <Tooltip title={userName || ''}>
+            <UserOutlined className="user" />
+          </Tooltip>
           <Popconfirm
           placement="bottomRight"
           title='Confirm to log out?'
@@ -93,6 +113,7 @@ const Home = () => {
         >
           <Button icon={<LoginOutlined/>} type="primary" danger>Log Out</Button>
         </Popconfirm>
+
         </Header>
         <Content
           style={{
@@ -101,12 +122,23 @@ const Home = () => {
         >
           <div
             style={{
-              padding: 24,
+              padding: 20,
               minHeight: 360,
               borderRadius: borderRadiusLG,
             }}
           >
-            <Outlet/>
+            <span 
+              style={{ 
+                color: "#ffffff", 
+                textAlign: "right",
+                display: "flex",
+                justifyContent: "flex-end",
+                padding: "0px 0px 20px 0px"
+              }}
+            >
+              Last Updated on {currentTime}
+            </span>
+          <Outlet/>
           </div>
         </Content>
       </Layout>

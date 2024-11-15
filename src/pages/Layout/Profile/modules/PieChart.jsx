@@ -11,12 +11,10 @@ const PieChart = () => {
     myChart.setOption({
       backgroundColor: 'rgb(83, 79, 79)',
       title: {
-        text: 'Type of article sent',
-        left: 'center',
-        top: 20,
-        textStyle: {
-          color: 'white'
-        }
+        text: 'Type of article sent'
+        // textStyle: {
+        //   color: 'white'
+        // }
       },
       visualMap: {
         show: false,
@@ -65,7 +63,10 @@ const PieChart = () => {
         }
       ]
     })
-  })
+    return () => {
+      myChart.dispose()
+    }
+  }, [])
   return (
     <Card hoverable style={{
       width: 320,

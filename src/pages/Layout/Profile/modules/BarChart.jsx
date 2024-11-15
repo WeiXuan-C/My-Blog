@@ -10,7 +10,7 @@ const BarChart = () => {
         const myChart = echarts.init(barChart.current, 'dark')
         myChart.setOption({
             title: {
-                text: 'Article Views'
+                text: 'Article views'
             },
             backgroundColor: 'rgb(83, 79, 79)',
             xAxis: {
@@ -27,7 +27,12 @@ const BarChart = () => {
                 }
             ]
         })
-    })
+        //组件卸载时，清理函数用于处理图表实例
+        return () => {
+            myChart.dispose()
+        }
+    //空的依赖数组确保此效果仅在挂载时运行一次
+    }, []) 
     return (
         <div>
             <Card hoverable style={{

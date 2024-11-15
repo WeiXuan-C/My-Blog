@@ -1,21 +1,27 @@
 .ant-layout{
     height: 100vh;
-    background-color: rgb(30,41,59);
+    background-color: #0b0a09;
 
     .demo-logo-vertical{
         height: 64px;
         display: flex;
         align-items: center;
-        justify-content: center;
+        // justify-content: center;
         h4{
-            color:rgb(219, 219, 215);
+            color:#ce9b57;
             font-size: 26px;
+            width: 100%;
+            
         }
+    }
+
+    .demo-logo-vertical img:hover{
+        cursor: pointer;
     }
 
     header{
         text-align: end;
-        color:rgb(219, 219, 215);
+        color:#ce9b57;
         background-color: #001529;
         .user{
             font-size: 15px;
@@ -28,11 +34,22 @@
         }
     }
     main div{
-        color:rgb(219, 219, 215);
-        background-color: rgb(83, 79, 79);
+        color:#ffffff;
+        background-color: #001529;
         height: 96%;
     }
     .ant-layout-sider-zero-width-trigger{
         margin-top: 4px;
+    }
+
+    .user{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .user svg:hover {
+      transform: scale(1.1); /* Slightly enlarge icon on hover */
+      color: #1890ff; /* Change color on hover */
+      transition: transform 0.3s ease, color 0.3s ease;
     }
 }

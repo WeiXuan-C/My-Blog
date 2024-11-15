@@ -54,7 +54,7 @@ const fetchUserInfo = ()=>{
     return async (dispatch) => {
         try{
             const response = await request.get(`/user?token=${getToken()}`)
-            console.log(response.data)
+            console.log("welcome", response.data[0].username)
             if(response.data && response.data.length > 0){
                 dispatch(setUserInfo(response.data[0]))
             }else{

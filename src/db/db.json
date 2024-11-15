@@ -27,12 +27,6 @@
   ],
   "article": [
     {
-      "Title": "tiktok gudaaa",
-      "ArticleType": "News Articles",
-      "content": "<p>mmmmmmmmmm</p>",
-      "id": "be50"
-    },
-    {
       "id": "ddba",
       "Title": "adadad",
       "ArticleType": "News Articles",
@@ -79,6 +73,12 @@
       "Title": "simpo",
       "ArticleType": "Travel and Exploration Articles",
       "content": "<p>1</p>"
+    },
+    {
+      "id": "ceeb",
+      "Title": "AAaaa",
+      "ArticleType": "Feature Articles",
+      "content": "<h1>aaaaaaa</h1>"
     }
   ]
 }

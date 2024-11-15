@@ -1,6 +1,7 @@
 //axios的封装处理
 import axios from "axios";
 import { getToken, removeToken } from "./token";
+import { useNavigate } from "react-router-dom";
 
 
 //1. 根域名配置
@@ -27,7 +28,8 @@ request.interceptors.request.use(
       } else {
         // 如果没有 ":wx" 部分，删除 token 并重定向到登录页面
         removeToken();
-        window.location.href = "/login";
+        const navigate = useNavigate()
+        navigate("/login")
       }
     }
     return config;

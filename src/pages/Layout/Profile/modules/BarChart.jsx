@@ -12,7 +12,7 @@ const BarChart = () => {
             title: {
                 text: 'Article views'
             },
-            backgroundColor: 'rgb(83, 79, 79)',
+            backgroundColor: 'transparent',
             xAxis: {
                 type: 'category',
                 data: ['news', 'feature', 'edu', 'travel',]

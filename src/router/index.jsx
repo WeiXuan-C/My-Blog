@@ -4,6 +4,7 @@ import User from '../pages/Layout/User'
 import Publish from '../pages/Layout/Publish'
 import Article from '../pages/Layout/Article'
 import Login from '../pages/Login'
+import Movie from '../pages/Layout/Movie'
 import AuthRoute from '../components/AuthRoute';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
             {
                 path:"",
                 element:<Profile/>
+            },
+            {
+                path:"movie",
+                element:<Movie/>
             },
             {
                 path:"article",

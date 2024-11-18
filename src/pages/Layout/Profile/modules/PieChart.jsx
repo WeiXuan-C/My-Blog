@@ -9,7 +9,7 @@ const PieChart = () => {
   useEffect(() => {
     const myChart = echarts.init(PieChart.current, 'dark')
     myChart.setOption({
-      backgroundColor: 'rgb(83, 79, 79)',
+      backgroundColor: 'transparent',
       title: {
         text: 'Type of article sent'
         // textStyle: {

@@ -1,5 +1,5 @@
-import { UploadOutlined, UserOutlined, VideoCameraOutlined ,LoginOutlined, UserAddOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme, Button, Popconfirm, message } from 'antd';
+import { UploadOutlined, UserOutlined, VideoCameraOutlined ,LoginOutlined, UserAddOutlined, CloudUploadOutlined, AppstoreAddOutlined } from '@ant-design/icons';
+import { Layout, Menu, theme, Button, Popconfirm, message, Upload } from 'antd';
 import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo,clearUserInfo } from '../../../store/modules/user';
@@ -47,6 +47,11 @@ const Home = () => {
       label:'Dashboard',
       key:'/',
       icon:<UserOutlined/>
+    },
+    {
+      label:'Movie',
+      key:'/movie',
+      icon:<AppstoreAddOutlined/>
     },
     {
       label:'Article',
@@ -124,20 +129,22 @@ const Home = () => {
             style={{
               padding: 20,
               minHeight: 360,
-              borderRadius: borderRadiusLG,
+              borderRadius: borderRadiusLG
             }}
           >
-            <span 
-              style={{ 
-                color: "#ffffff", 
-                textAlign: "right",
-                display: "flex",
-                justifyContent: "flex-end",
-                padding: "0px 0px 20px 0px"
-              }}
-            >
-              Last Updated on {currentTime}
-            </span>
+            {location.pathname === '/' && (
+              <span 
+                style={{ 
+                  color: "#ffffff", 
+                  textAlign: "right",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  padding: "0px 0px 20px 0px"
+                }}
+              >
+                Last Updated on {currentTime}
+              </span>
+            )}
           <Outlet/>
           </div>
         </Content>

@@ -69,8 +69,8 @@ const PieChart = () => {
   }, [])
   return (
     <Card hoverable style={{
-      width: 320,
-      height: 270,
+      width: 300,
+      height: 300,
     }}>
       <section className='pieChart' ref={PieChart}></section>
     </Card>

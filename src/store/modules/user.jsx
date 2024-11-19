@@ -1,6 +1,7 @@
 //用户相关的数据管理
 import { createSlice } from "@reduxjs/toolkit";
 import { setToken as setLocalToken , getToken, request, removeToken } from "../../utils"
+import { message } from "antd";
 
 const userStore = createSlice({
     name:"user",
@@ -46,6 +47,7 @@ const loginHandler = (loginForm)=>{
             dispatch(setToken(response.data[0].token))
         }else{
             dispatch(setStatus(401))
+            message.error('Login failed. Please check your username and password.');
         }
     }
 }

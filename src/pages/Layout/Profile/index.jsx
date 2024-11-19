@@ -13,8 +13,8 @@ const Profile = () => {
       <div className='profileContent'>
       <Card hoverable
         style={{
-          width: 320,
-          height: 270,
+          width: 300,
+          height: 300,
         }}
       >
         <div>

@@ -1,5 +1,5 @@
 import { UploadOutlined, UserOutlined, VideoCameraOutlined ,LoginOutlined, UserAddOutlined, CloudUploadOutlined, AppstoreAddOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme, Button, Popconfirm, message, Upload } from 'antd';
+import { Layout, Menu, theme, Button, Popconfirm, message, Upload, AutoComplete } from 'antd';
 import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo,clearUserInfo } from '../../../store/modules/user';
@@ -128,7 +128,6 @@ const Home = () => {
           <div
             style={{
               padding: 20,
-              minHeight: 360,
               borderRadius: borderRadiusLG
             }}
           >

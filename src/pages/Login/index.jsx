@@ -1,4 +1,4 @@
-import { Card, Button, Checkbox, Form, Input} from 'antd';
+import { Card, Button, Checkbox, Form, Input, message} from 'antd';
 import './index.scss'
 import { useDispatch } from 'react-redux';
 import { loginHandler } from '../../store/modules/user';
@@ -9,13 +9,15 @@ const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     //触发异步action
-    dispatch(loginHandler(values))
+    try{
+      await dispatch(loginHandler(values))
     //跳转到首页
-    setTimeout(() => {
       navigate('/')
-    }, 15)
+    }catch (error){
+      console.error("Login failed", error)
+    }
   };
 
   return (

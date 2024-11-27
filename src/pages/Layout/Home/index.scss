@@ -1,6 +1,13 @@
+::-webkit-scrollbar{
+    display: none;
+}
 .ant-layout{
-    height: 175vh;
+    min-height: 100vh;
     background-color: #0b0a09;
+
+    .ant-layout-sider{
+        position: relative;
+    }
 
     .demo-logo-vertical{
         height: 64px;
@@ -20,7 +27,7 @@
 
     header{
         text-align: end;
-        color:#ce9b57;
+        color:#ffffff;
         background-color: #001529;
         .user{
             font-size: 15px;
@@ -39,6 +46,7 @@
     }
     .ant-layout-sider-zero-width-trigger{
         margin-top: 4px;
+        z-index: 0;
     }
 
     .user{
@@ -47,8 +55,37 @@
     }
 
     .user svg:hover {
-      transform: scale(1.1); /* Slightly enlarge icon on hover */
-      color: #1890ff; /* Change color on hover */
-      transition: transform 0.3s ease, color 0.3s ease;
+        transform: scale(1.1); /* Slightly enlarge icon on hover */
+        color: #ce9b57; /* Change color on hover */
+        transition: transform 0.3s ease, color 0.3s ease;
     }
+
+    .custom-menu .ant-menu-item-selected {
+        background-color: #ce9b57; /* Change background color */
+        color: #fff; /* Change text color */
+        transition: background-color 0.2s ease, color 0.2s ease; /* Smooth transition for background and text color */
+    }
+      
+      /* Optional: change the hover effect for selected item */
+    .custom-menu .ant-menu-item-selected:hover {
+        background-color: #ce9b57; /* Lighter background color on hover */
+        transition: background-color 0.2s ease; /* Smooth transition for background color on hover */
+    }
+      
+      /* Change the icon color when selected with smooth transition */
+    .custom-menu .ant-menu-item-selected .ant-menu-item-icon {
+        color: #fff; /* Change icon color */
+        transition: color 0.2s ease; /* Smooth transition for icon color */
+    }
+      
+      /* Optional: Add animation for the selected item (e.g., scale effect) */
+    .custom-menu .ant-menu-item-selected {
+        transform: scale(1); /* Start with normal size */
+        transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease; /* Add transition for scale effect */
+    }
+      
+    .custom-menu .ant-menu-item-selected:hover {
+        transform: scale(1.05); /* Scale up when hovering */
+    }
+      
 }

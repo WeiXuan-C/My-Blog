@@ -74,10 +74,15 @@ const Home = () => {
     token: { borderRadiusLG },
   } = theme.useToken();
 
+  // Handle selectedKey based on current route, including child routes
+  const selectedKeys = location.pathname.startsWith('/movie') ? ['/movie'] : [location.pathname];
+
   return (
+    
     <Layout>
 
       <Sider
+        className='custom-menu'
         breakpoint="lg"
         collapsedWidth="0"
         collapsed={collapsed}
@@ -95,7 +100,13 @@ const Home = () => {
             </Link>
             <h4>AuraX</h4>
         </div>
-        <Menu theme="dark" mode="inline" selectedKeys={location.pathname} onClick={onSideBarClick} items={items} />
+        <Menu 
+          theme="dark" 
+          mode="inline" 
+          selectedKeys={selectedKeys} 
+          onClick={onSideBarClick} 
+          items={items} 
+          />
       </Sider>
 
       <Layout>
@@ -122,33 +133,35 @@ const Home = () => {
         </Header>
         <Content
           style={{
-            margin: '24px 16px 0',
+            margin: '24px 16px',
           }}
         >
           <div
             style={{
-              padding: 20,
+              padding: "20px",
               borderRadius: borderRadiusLG
             }}
           >
-            {location.pathname === '/' && (
-              <span 
-                style={{ 
-                  color: "#ffffff", 
-                  textAlign: "right",
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  padding: "0px 0px 20px 0px"
-                }}
-              >
-                Last Updated on {currentTime}
-              </span>
-            )}
-          <Outlet/>
+              {location.pathname === '/' && (
+                <span 
+                  style={{ 
+                    color: "#ffffff", 
+                    textAlign: "right",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    padding: "0px 0px 20px 0px"
+                  }}
+                >
+                  Last Updated on {currentTime}
+                </span>
+              )}
+              
+              <Outlet/>
           </div>
         </Content>
       </Layout>
     </Layout>
+    
   );
 };
 

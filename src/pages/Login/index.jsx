@@ -49,11 +49,11 @@ const Login = () => {
             rules={[
               {
                 required: true,
-                message: 'Please input your username!',
+                message: 'Please input your username.',
               },
               {
                 pattern:/.{5,}/,
-                message:'Please input more than 4 characters',
+                message:'Please input more than 4 characters.',
               },
             ]}
           >

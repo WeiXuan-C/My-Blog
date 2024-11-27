@@ -1,62 +1,148 @@
-.create-movie {
-  .create-movie-btn {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-
-    &:hover {
-      background-color: #0056b3;
-    }
-  }
-
   .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
 
     .modal-content {
-      position: relative;
-      background: white;
-      padding: 20px;
+      background: #001529;
+      padding: 0px 0px 10px 0px;
       border-radius: 10px;
-      width: 400px;
-      max-width: 90%;
+      width: 100%;
+      overflow-y: hidden;
 
+      .title{
+        .ant-breadcrumb-link,
+        .ant-breadcrumb-separator, 
+        a{
+        font-size: 28px;
+        font-weight: bold;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+        
+      }
+      
       label {
         display: block;
-        margin: 10px 0;
+        margin: 20px 0;
         font-size: 14px;
-        color: #0b0a09;
+        color: #ce9b57;
 
-        input {
-          width: 100%;
+        input[type="file"]::-webkit-file-upload-button {
+          cursor: pointer;
+          padding: 6px 12px;
+          background-color: #ce9b57;
+          color: white;
+          border: 1px solid #ce9b57;
+          border-radius: 4px;
+        }
+        
+        input[type="file"]::-webkit-file-upload-button:hover {
+          background-color: #b6884c;
+          border-color: #b6884c;
+        }
+
+        input,
+        select,
+        textarea {
+          width: 99.5%;
           padding: 8px;
-          margin-top: 5px;
-          border: 1px solid #ccc;
+          margin-top: 10px;
+          border: 1px solid #fff;
           border-radius: 5px;
+          margin-left: 1px;  
+          margin-right: 1px;            
+        }
+
+        textarea{
+          box-sizing: border-box; // Includes padding and border in width/height calculations
+          overflow-y: auto; 
+          min-height: 100px; // Minimum height for better visibility
+          max-height: 400px; // Optional: Limit the height if needed
+          transition: height 0.2s ease; // Smooth height adjustment
+          background-color: #f4f4f4; // Light background for better contrast
+          scrollbar-width: thin; // For Firefox, reduces scrollbar thickness
+          scrollbar-color: #ce9b57 #f4f4f4; 
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 13.3333px;
+          &::-webkit-scrollbar {
+            width: 8px; // Custom scrollbar width
+          }
+
+          &::-webkit-scrollbar-track {
+            background: #f4f4f4; // Track background
+            border-radius: 5px; // Smooth edges
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: #ce9b57; // Thumb color
+            border-radius: 5px; // Rounded corners
+          }
+
+          &::-webkit-scrollbar-thumb:hover {
+            background: #b6884c; // Darker thumb on hover
+          }
+        }
+
+        .checkbox-group{
+          display: flex;
+          flex-direction: column;
+          margin: 10px 0;  
+
+          label{
+            display: flex;
+            align-items: center;
+            margin: 1px 0;
+            cursor: pointer;
+
+              input[type="checkbox"]{
+                // margin-right: 10px;
+                margin: 5px 10px 5px 1px;
+                width: 18px;
+                height: 18px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                appearance: none;
+                cursor: pointer;
+                
+                outline: none;
+                transition: background-color 0.2s ease, border-color 0.2s ease;
+                &:checked {
+                  background-color: #ce9b57; // Customize the color
+                  border-color: #ce9b57; // Match the background color
+                  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M6.173 12.166l-3.613-3.612L4.56 7.588l1.613 1.613 4.76-4.76 1.573 1.573-6.333 6.333z'/%3E%3C/svg%3E");
+                  background-size: 75%;
+                  background-repeat: no-repeat;
+                  background-position: center;
+                }
+              }   
+              &:hover input[type="checkbox"]{
+                border-color: #ce9b57;
+              }           
+          }
         }
       }
 
-      h2 {
-        color: #007bff;
-      }
+      .input-wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 99.5%;
+        margin: 1px 0;
+        min-height: 19px;
+        p{
+          font-size: smaller;
+          flex: end;
+          margin-top: 3px;
+        }
 
-      p{
-        color: #0b0a09;
+        span.error-message{
+          color: #c82333;
+        }
       }
 
       .modal-actions {
-        margin-top: 15px;
+        margin-top: 30px;
         display: flex;
         justify-content: space-between;
         background-color: transparent;
@@ -69,36 +155,21 @@
           font-size: 14px;
           
           &:first-child {
-            background-color: #28a745;
+            background-color: #ce9b57;
             color: white;
-            &:hover {
-              background-color: #218838;
-            }
-          }
+            font-weight: bold;
 
-          &:last-child {
-            background-color: #dc3545;
-            color: white;
+            &:disabled {
+              opacity: 0.5;
+              cursor: not-allowed;
+            }
+            
             &:hover {
-              background-color: #c82333;
+              background-color: #b6884c;
             }
           }
         }
       }
 
-      // Close icon styling
-      .close-icon {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 24px;
-        color: #ccc;
-        cursor: pointer;
-
-        &:hover {
-          color: #333;
-        }
-      }
     }
   }
-}

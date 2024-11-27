@@ -1,25 +1,23 @@
-import './index.scss';
-import CreateMovie from './createMovie';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Outlet } from 'react-router-dom';
+import { setMovie } from '../../../store/modules/movie';
 
 const Movie = () => {
-  const handleAddMovie = (newMovie) => {
-    console.log('New movie added:', newMovie);
-    // Add logic to update state or send data to the server
-  };
+  const movie = useSelector((state) => state.movie.movie); // Access movie state
+  useEffect(() => {
+    if (movie) {
+      console.log("Movie added:", movie);
+    } else {
+      console.log("No movie added");
+    }
+  }, [movie]);
 
   return (
     <div>
-      <h1>Movie List</h1>
-      <hr style={{
-        border: "1px solid #ce9b57",
-        borderTop: "none"
-      }}/>
-      {/* Use the CreateMovie component to add movies */}
-      <div className='createMovieButton'>
-        <CreateMovie onAddMovie={handleAddMovie} />
-      </div>
+      <Outlet />
     </div>
-  );
+  )
 };
 
 export default Movie;

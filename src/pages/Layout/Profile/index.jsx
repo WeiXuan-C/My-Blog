@@ -13,7 +13,7 @@ const Profile = () => {
       <div className='profileContent'>
       <Card hoverable
         style={{
-          width: 300,
+          width: "100%",
           height: 300,
         }}
       >
@@ -23,8 +23,8 @@ const Profile = () => {
             <p>{role}</p>
         </div>
       </Card>
-      <BarChart />
-      <PieChart />
+      {/* <BarChart />
+      <PieChart /> */}
       </div>
   )
 }

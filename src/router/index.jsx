@@ -7,6 +7,8 @@ import Login from '../pages/Login'
 import Movie from '../pages/Layout/Movie'
 import AuthRoute from '../components/AuthRoute';
 import { createBrowserRouter } from 'react-router-dom';
+import CreateMovie from '../pages/Layout/Movie/createMovie'
+import DefaultMovie from '../pages/Layout/Movie/defaultMovie'
 
 const router = createBrowserRouter([
     {
@@ -19,7 +21,19 @@ const router = createBrowserRouter([
             },
             {
                 path:"movie",
-                element:<Movie/>
+                element:<Movie/>,
+                children: [
+                    {
+                        // path: "defaultMovie",
+                        index: true,
+                        element: <DefaultMovie/>
+                    },
+                    {
+                        path: "createMovie",
+                        element: <CreateMovie/>
+                    }
+                ]
+
             },
             {
                 path:"article",

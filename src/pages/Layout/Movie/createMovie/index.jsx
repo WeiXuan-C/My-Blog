@@ -1,625 +1,480 @@
-import './index.scss';
-import PropTypes from 'prop-types';
+import './index.scss'
+import DisplayBreadcrumb from '../../Header/breadcrumb'
+import Form from '../../../../components/Form/Form';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import DisplayBreadcrumb from '../../Header/breadcrumb';
 
 const breadcrumbPath = [
-  {
-    title: 'Movie List',
-    link: '/movie'
-  },
-  {
-    title: 'Create New Movie'
-  },
+    {
+        title: 'Movie List',
+        link: './movie'
+    },
+    {
+        title: 'Create New Movie'
+    },
 ];
 
-const CreateMovie = ({onAddMovie}) => {
-  const navigate = useNavigate();
-  //ori state for createMovieForm
-  const [movie, setMovie] = useState({
-    title: '', 
-    image: null,
-    runningTimeHours: '',
-    runningTimeMinutes: '',
-    cast: '',
-    synopsis: '',
-    trailer: '',
-    director: '',
-    genre: '',
-    spokenLanguage: '',
-    subtitles: [],
-    classification: '',
-    releaseDate: '',
-  });
+const CreateMovie = () => {
+    const [movie, setMovie] = useState({
+        title: '', 
+        image: null,
+        runningTimeHours: '',
+        runningTimeMinutes: '',
+        cast: '',
+        synopsis: '',
+        trailer: '',
+        director: '',
+        genre: '',
+        spokenLanguage: '',
+        subtitles: [],
+        classification: '',
+        releaseDate: '',
+    });
 
-  //ori state for errorMsg
-  const [validationErrors, setValidationErrors] = useState({
-    title: "Title is required.",
-    image: "Image is required.",
-    runningTimeHours: "Running Time is required.",
-    cast: "Cast is required.",
-    synopsis: "Synopsis is required.",
-    trailer: "Trailer link is required.",
-    director: "Director is required.",
-    genre: "Genre is required.",
-    spokenLanguage: "Spoken Language is required.",
-    classification: "Classification is required.",
-    subtitles: "At least one subtitle is required.",
-    releaseDate: "Release Date is required.",
-  });
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-  const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([/a-zA-Z0-9#?&%-]*)?$/;
+    const [validationErrors, setValidationErrors] = useState({
+        title: "Title is required.",
+        image: "Image is required.",
+        runningTimeHours: "Running Time is required.",
+        cast: "Cast is required.",
+        synopsis: "Synopsis is required.",
+        trailer: "Trailer link is required.",
+        director: "Director is required.",
+        genre: "Genre is required.",
+        spokenLanguage: "Spoken Language is required.",
+        classification: "Classification is required.",
+        subtitles: "At least one subtitle is required.",
+        releaseDate: "Release Date is required.",
+    });
 
-  const handleInputChange = (e) => {
-    const {name, type, checked} = e.target
-    const value = e.target.value ? e.target.value.trim() : '';
-    // Handle file input
-    if (type === 'file' && name === 'image') {
-      const file = e.target.files[0];
-      if (file) {
-        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        const maxSize = 5 * 1024 * 1024; // 5MB size limit
+    const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([/a-zA-Z0-9#?&%-]*)?$/;
     
-        // Check file type and size
-        if (!validTypes.includes(file.type)) {
-          setValidationErrors((prevErrors) => ({
-            ...prevErrors,
-            image: 'Invalid file format. Only JPEG, PNG, and GIF are allowed.',
-          }));
-        } else if (file.size > maxSize) {
-          setValidationErrors((prevErrors) => ({
-            ...prevErrors,
-            image: 'File size exceeds the 5MB limit.',
-          }));
+    const handleInputChange = (e) => {
+        const { name, type, value } = e.target;
+        if (type === 'file' && name === 'image') {
+            const file = e.target.files[0];
+            handleFileValidation(file);
         } else {
-          // Clear the error when the file is valid
-          setValidationErrors((prevErrors) => ({ ...prevErrors, image: '' }));
-          setMovie((prevMovie) => ({ ...prevMovie, image: file }));
+            setMovie((prevMovie) => ({
+                ...prevMovie,
+                [name]: value,
+            }));
         }
-      } else {
-        // Show error if no file is selected
-        setValidationErrors((prevErrors) => ({
-          ...prevErrors,
-          image: 'Image is required.',
-        }));
-      }
-    }
-    //handle checkbox
-    else if(type === 'checkbox' && name === 'subtitles'){
-      setMovie((prevMovie)=> {
-        const updatedSubtitles = checked 
-          ? [...prevMovie.subtitles, value]
-          : prevMovie.subtitles.filter((subtitle) => subtitle !== value)
-        return {...prevMovie, subtitles: updatedSubtitles}
-      })
-    }
-    else{
-      setMovie((prevMovie) => ({ 
-        ...prevMovie, 
-        [name]: value
-      }))
-    }    
-  }
-
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-    const minLength = e.target.minLength;
-  
-    const formatFieldName = (fieldName) => {
-      return fieldName
-        .replace(/([A-Z])/g, ' $1')
-        .replace(/^./, (str) => str.toUpperCase());
     };
-    const minDate = new Date().toISOString().split('T')[0];
-  
-    // Validation for subtitles
-    if (name === 'subtitles') {
-      if (movie.subtitles.length === 0) {
-        setValidationErrors((prevErrors) => ({
-          ...prevErrors,
-          subtitles: 'At least one subtitle is required.',
-        }));
-      } else {
-        const updatedErrors = { ...validationErrors };
-        delete updatedErrors.subtitles; // Clear error if at least one subtitle is selected
-        setValidationErrors(updatedErrors);
-      }
-    } 
-    // Validation for releaseDate
-    else if (name === 'releaseDate') {
-      if (!value) {
-        const errorMessage = `${formatFieldName(name)} is required.`;
-        setValidationErrors((prevErrors) => ({
-          ...prevErrors,
-          releaseDate: errorMessage,
-        }));
-      } else if (value < minDate) { // Compare entered date with minDate
-        const errorMessage = `${formatFieldName(name)} cannot be earlier than today.`;
-        setValidationErrors((prevErrors) => ({
-          ...prevErrors,
-          releaseDate: errorMessage,
-        }));
-      } else {
-        const updatedErrors = { ...validationErrors };
-        delete updatedErrors.releaseDate; // Clear error if value is valid
-        setValidationErrors(updatedErrors);
-      }
-      setMovie((prevData) => ({
-        ...prevData,
-        releaseDate: value,
-      }));
-    } 
-    // Validation for image
-    else if (name === 'image') {
-      if (!movie.image) {
-        setValidationErrors((prevErrors) => ({
-          ...prevErrors,
-          image: `${formatFieldName('image')} is required.`,
-        }));
-      } else if (!(movie.image instanceof File)) {
-        setValidationErrors((prevErrors) => ({
-          ...prevErrors,
-          image: `${formatFieldName('image')} must be a valid file.`,
-        }));
-      } else if (movie.image.size > 5 * 1024 * 1024) { // Check file size (5MB)
-        setValidationErrors((prevErrors) => ({
-          ...prevErrors,
-          image: `${formatFieldName('image')} must be less than 5MB.`,
-        }));
-      } else if (movie.image && !['image/jpeg', 'image/png', 'image/gif'].includes(movie.image.type)) { // Check file type
-        setValidationErrors((prevErrors) => ({
-          ...prevErrors,
-          image: `${formatFieldName('image')} must be a JPEG, PNG, or GIF file.`,
-        }));
-      } else {
-        const updatedErrors = { ...validationErrors };
-        delete updatedErrors.image; // Clear error if the image is valid
-        setValidationErrors(updatedErrors);
-      }
-    }
-    // General validation for other fields
-    else if (value.trim() === '') {
-      setValidationErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: `${formatFieldName(name)} is required.`,
-      }));
-    } else if (minLength && value.trim().length < minLength) {
-      setValidationErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: `${formatFieldName(name)} must be at least ${minLength} characters.`,
-      }));
-    } else {
-      const updatedErrors = { ...validationErrors };
-      delete updatedErrors[name]; // Clear error if value is valid
-      setValidationErrors(updatedErrors);
-    }
-  };
-  
-  const validationForm = () => {
-    const errors = {};
-    const formatFieldName = (fieldName) => {
-      return fieldName
-        .replace(/[A-Z]/g, '$1')
-        .replace(/^./, (str) => str.toUpperCase())
-    }
 
-    if (!movie.title.trim()) errors.title = `${formatFieldName('title')} is required.`;
-    else if (movie.title.length < 5) errors.title = `${formatFieldName('title')} must be at least 5 characters.`;
-  
-    if (!movie.image) errors.image = `${formatFieldName('image')} is required.`;
-      else if (!(movie.image instanceof File)) {
-        errors.image = `${formatFieldName('image')} must be a valid file.`;
-    } else if (movie.image.size > 5 * 1024 * 1024) { // File size check
-        errors.image = `${formatFieldName('image')} must be less than 5MB.`;
-    } else if (!['image/jpeg', 'image/png', 'image/gif'].includes(movie.image.type)) { // File type check
-        errors.image = `${formatFieldName('image')} must be a JPEG, PNG, or GIF file.`;
-    }
+    const handleFileValidation = (file) => {
+        if (!file) {
+            setValidationErrors((prevErrors) => ({
+                ...prevErrors,
+                image: 'Image is required.',
+            }));
+        } else if (!['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
+            setValidationErrors((prevErrors) => ({
+                ...prevErrors,
+                image: 'Invalid file format. Only JPEG, PNG, and GIF are allowed.',
+            }));
+        } else if (file.size > 5 * 1024 * 1024) {
+            setValidationErrors((prevErrors) => ({
+                ...prevErrors,
+                image: 'File size exceeds the 5MB limit.',
+            }));
+        } else {
+            setValidationErrors((prevErrors) => ({ ...prevErrors, image: '' }));
+            setMovie((prevMovie) => ({ ...prevMovie, image: file }));
+        }
+    };
 
-    if (movie.runningTimeHours === 0) errors.runningTimeHours =  `${formatFieldName('runningTime')} is required.`;
-
-    if (!movie.cast.trim()) errors.cast = `${formatFieldName('cast')} is required.`;
-    else if (movie.cast.length < 10) errors.cast = `${formatFieldName('cast')} must be at least 10 characters.`;
-
-    if (!movie.synopsis.trim()) errors.synopsis = `${formatFieldName('synopsis')} is required.`;
-    else if (movie.synopsis.length < 30) errors.synopsis = `${formatFieldName('synopsis')} must be at least 30 characters.`;
-
-    if (!movie.trailer.trim()) errors.trailer = `${formatFieldName('trailer')} Link is required.`;
-    else if (!urlRegex.test(movie.trailer)) errors.trailer = `Please enter a valid trailer link.`;
-  
-    if (!movie.director.trim()) errors.director = `${formatFieldName('director')} is required.`;
-    else if (movie.director.length < 5) errors.director = `${formatFieldName('director')} must be at least 5 characters.`;
-  
-    if (!movie.genre.trim()) errors.genre = `${formatFieldName('genre')} is required.`;
-    else if (movie.genre.length < 5) errors.genre = `${formatFieldName('genre')} must be at least 5 characters.`;
-
-    if (!movie.spokenLanguage.trim()) errors.spokenLanguage = `${formatFieldName('spokenLanguage')} is required.`;
-
-    if (!movie.classification.trim()) errors.classification = `${formatFieldName('classification')} is required.`;
-
-    if (movie.subtitles.length === 0) errors.subtitles = `At least one subtitle is required.`;
-
-    if (!movie.releaseDate) errors.releaseDate = `${formatFieldName('releaseDate')} is required.`;
-
-    return errors;
-  };
-
-  const validateWebsite = (e) => {
-    const inputValue = e.target.value ? e.target.value.trim() : ''; // Get the trimmed value, or an empty string if null or undefined
-    console.log(inputValue)
-    if (!inputValue) {
-      setValidationErrors((prevErrors) => ({
-        ...prevErrors,
-        trailer: "Trailer Link is required.",
-      }));
-    } else if (!urlRegex.test(inputValue)) {
-      setValidationErrors((prevErrors) => ({
-        ...prevErrors,
-        trailer: "Please enter a valid trailer link.",
-      }));
-    } else {
-      setValidationErrors((prevErrors) => {
-        const updatedErrors = { ...prevErrors }; // Create a shallow copy of the errors object
-        delete updatedErrors.trailer; // Remove the trailer key
-        return updatedErrors; // Return the updated object
-      });
-    }
+    const handleCheckboxChange = (e) => {
+        const { name, checked, value } = e.target;
     
-    setMovie((prevData) => ({
-      ...prevData,
-      trailer: inputValue,
-    }));
-  }
+        if (name === 'subtitles') {
+            // Update the subtitles array first
+            setMovie((prevData) => {
+                let updatedSubtitles = [...prevData.subtitles];
+    
+                if (checked) {
+                    // Add subtitle if checkbox is checked
+                    updatedSubtitles.push(value);
+                } else {
+                    // Remove subtitle if checkbox is unchecked
+                    updatedSubtitles = updatedSubtitles.filter((subtitle) => subtitle !== value);
+                }
+    
+                // Validation after updating the subtitles
+                if (updatedSubtitles.length === 0) {
+                    setValidationErrors((prevErrors) => ({
+                        ...prevErrors,
+                        subtitles: 'At least one subtitle is required.',
+                    }));
+                } else {
+                    setValidationErrors((prevErrors) => {
+                        const updatedErrors = { ...prevErrors };
+                        delete updatedErrors.subtitles;
+                        return updatedErrors;
+                    });
+                }
+    
+                return {
+                    ...prevData,
+                    subtitles: updatedSubtitles,
+                };
+            });
+        }
+    };    
+    
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        const minLength = e.target.minLength;
+        const trimmedValue = value.trim();
+        const formatFieldName = (fieldName) => {
+          return fieldName
+            .replace(/([A-Z])/g, ' $1')
+            .replace(/^./, (str) => str.toUpperCase());
+        };
+        const minDate = new Date().toISOString().split('T')[0];
 
-  const isFormValid = () => {
-    console.log("Validation Errors: ", validationErrors)
-    const isValid =      
-      !Object.keys(validationErrors).length && 
-      movie.title.trim() && //not empty
-      movie.image && 
-      movie.runningTimeHours && 
-      movie.cast.trim() &&
-      movie.synopsis.trim() && 
-      movie.trailer.trim() && 
-      movie.director.trim() && 
-      movie.genre.trim() && 
-      movie.spokenLanguage.trim() && 
-      movie.subtitles.length > 0 && 
-      movie.classification.trim() && 
-      movie.releaseDate;
-    return isValid;
-  }
+        // Validation for releaseDate
+        if (name === 'releaseDate') {
+            if (!value) {
+                const errorMessage = `${formatFieldName(name)} is required.`;
+                setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    releaseDate: errorMessage,
+                }));
+            } else if (value < minDate) { // Compare entered date with minDate
+                const errorMessage = `${formatFieldName(name)} cannot be earlier than today.`;
+                setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    releaseDate: errorMessage,
+                }));
+            } else {
+                setValidationErrors((prevErrors) => {
+                    const updatedErrors = { ...prevErrors };
+                    delete updatedErrors.releaseDate;
+                    return updatedErrors;
+                });
+            }
+            setMovie((prevData) => ({
+                ...prevData,
+                releaseDate: value,
+            }));
+        } 
+        // Validation for image
+        else if (name === 'image') {
+            if (!movie.image) {
+                setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    image: `${formatFieldName('image')} is required.`,
+                }));
+            } else if (!(movie.image instanceof File)) {
+                setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    image: `${formatFieldName('image')} must be a valid file.`,
+                }));
+            } else if (movie.image.size > 5 * 1024 * 1024) { // Check file size (5MB)
+                setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    image: `${formatFieldName('image')} must be less than 5MB.`,
+                }));
+            } else if (movie.image && !['image/jpeg', 'image/png', 'image/gif'].includes(movie.image.type)) { // Check file type
+                setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    image: `${formatFieldName('image')} must be a JPEG, PNG, or GIF file.`,
+                }));
+            } else {
+                setValidationErrors((prevErrors) => {
+                    const updatedErrors = { ...prevErrors };
+                    delete updatedErrors.image;
+                    return updatedErrors;
+                });
+            }
+        }
+        // General validation for other fields
+        else if (value.trim() === '') {
+            setValidationErrors((prevErrors) => ({
+                ...prevErrors,
+                [name]: `${formatFieldName(name)} is required.`,
+            }));
+        } else if (minLength && value.trim().length < minLength) {
+            setValidationErrors((prevErrors) => ({
+                ...prevErrors,
+                [name]: `${formatFieldName(name)} must be at least ${minLength} characters.`,
+            }));
+        }else {
+            setValidationErrors((prevErrors)=>{
+                const updatedErrors = { ...prevErrors };
+                delete updatedErrors[name]; // Clear error if value is valid
+                return updatedErrors;
+            })            
+        }
+        setMovie((prevData)=>({
+            ...prevData,
+            [name]: trimmedValue,
+        }))
+    };    
 
-  const handleSubmit = () => {
-    const errors = validationForm()
-    setValidationErrors(errors)
-    if(Object.keys(errors).length > 0){      
-      return
+    const validateWebsite = (e) => {
+        const inputValue = e.target.value ? e.target.value.trim() : ''; // Get the trimmed value, or an empty string if null or undefined
+        if (!inputValue) {
+            setValidationErrors((prevErrors) => ({
+                ...prevErrors,
+                trailer: "Trailer Link is required.",
+            }));
+        } else if (!urlRegex.test(inputValue)) {
+            setValidationErrors((prevErrors) => ({
+                ...prevErrors,
+                trailer: "Please enter a valid trailer link.",
+            }));
+        } else {
+            setValidationErrors((prevErrors) => {
+                const updatedErrors = { ...prevErrors }; // Create a shallow copy of the errors object
+                delete updatedErrors.trailer; // Remove the trailer key
+                return updatedErrors; // Return the updated object
+            });
+        }        
+        setMovie((prevData) => ({
+            ...prevData,
+            trailer: inputValue,
+        }));
     }
 
-    if (onAddMovie) {
-      onAddMovie(movie);
+    const isFormValid = () => {
+        return !Object.keys(validationErrors).length && Object.values(movie).every((value) => value !== '');
     }
-    setMovie({ title: '', image: null, runningTimeHours: '', runningTimeMinutes: '', cast: '', synopsis: '', trailer: '', director: '', genre: '', spokenLanguage: '', subtitles: [], classification: '', releaseDate: '' }); // Reset form
-    navigate('/movie')
-    console.log('Navigating to movieList page')
-  };
 
-  //test font-family and font size
-  // const inputRef = useRef(null)
-  // useEffect(()=>{
-  // const inputElement = document.querySelector('input');
-  // const computedStyles = window.getComputedStyle(inputElement);
-  // const fontFamily = computedStyles.fontFamily;
-  // const fontSize = computedStyles.fontSize;
-  // console.log('Font Family:', fontFamily);
-  // console.log('Font Size:', fontSize);
-  // },[])
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if(isFormValid())
+        {            
+            const createMovie = {
+                title: movie.title, 
+                image: movie.image,
+                runningTimeHours: movie.runningTimeHours,
+                runningTimeMinutes: movie.runningTimeMinutes,
+                cast: movie.cast,
+                synopsis: movie.synopsis,
+                trailer: movie.trailer,
+                director: movie.director,
+                genre: movie.genre,
+                spokenLanguage: movie.spokenLanguage,
+                subtitles: movie.subtitles,
+                classification: movie.classification,
+                releaseDate: movie.releaseDate 
+            }
+            dispatch(createMovie(createMovie))
+            const setMovie = { 
+                title: '', 
+                image: null,
+                runningTimeHours: '',
+                runningTimeMinutes: '',
+                cast: '',
+                synopsis: '',
+                trailer: '',
+                director: '',
+                genre: '',
+                spokenLanguage: '',
+                subtitles: [],
+                classification: '',
+                releaseDate: '' 
+            }
+            dispatch(setMovie(setMovie))
+            navigate('/movie')
+        }            
+    }        
+    const fields = [
+        {
+            name: "title",
+            type: "text",
+            label: "Title*",
+            value: movie.title,
+            onChange: (e) => handleInputChange(e),
+            onBlur: (e) => handleBlur(e),
+            minLength: 5,
+            maxLength: 20,
+            required: true,
+            errorMessage: validationErrors.title,
+            lengthLimit: 20,
+            extraContent: <p>{movie.title.trim().length} / 20</p>,
+        },
+        {
+            name: "image",
+            type: "file",
+            label: "Image*",
+            accept: 'image/jpeg, image/png, image.gif',
+            onChange: (e) => handleInputChange(e),
+            onBlur: (e) => handleBlur(e),
+            required: true,
+            errorMessage: validationErrors.image,
+        },
+        {
+            name: "runningTimeHours",
+            type: "number",
+            label: "Running Time*",
+            value: movie.runningTimeHours,
+            onChange: (e) => handleInputChange(e),
+            onBlur: (e) => handleBlur(e),
+            min: 1,
+            max: 23,
+            required: true,
+            placeholder: 'Hours',
+            errorMessage: validationErrors.runningTimeHours,
+        },
+        {
+            name: "runningTimeMinutes",
+            type: "number",
+            label: "",
+            value: movie.runningTimeMinutes,
+            onChange: (e) => handleInputChange(e),
+            onBlur: (e) => handleBlur(e),
+            min: 0,
+            max: 59,
+            required: false,
+            defaultValue: 0,
+            placeholder: 'Minutes',
+        },
+        {
+            name: "cast",
+            type: "textarea",
+            label: "Cast*",
+            value: movie.cast,
+            onChange: (e) => handleInputChange(e),
+            onBlur: (e) => handleBlur(e),
+            minLength: 10,
+            maxLength: 200,
+            required: true,
+            errorMessage: validationErrors.cast,
+            lengthLimit: 200,
+            extraContent: <p>{movie.cast.trim().length} / 200</p>,
+        },
+        {
+            name: "synopsis",
+            type: "textarea",
+            label: "Synopsis*",
+            value: movie.synopsis,
+            onChange: (e) => handleInputChange(e),
+            onBlur: (e) => handleBlur(e),
+            minLength: 30,
+            maxLength: 1000,
+            required: true,
+            errorMessage: validationErrors.synopsis,
+            lengthLimit: 1000,
+            extraContent: <p>{movie.synopsis.trim().length} / 1000</p>,
+        },
+        {
+            name: "trailer",
+            type: "text",
+            label: "Trailer*",
+            value: movie.trailer,
+            onChange: validateWebsite,
+            maxLength: 50,
+            required: true,
+            errorMessage: validationErrors.trailer,
+            lengthLimit: 50,
+            extraContent: <p>{movie.trailer.trim().length} / 50</p>,
+        },
+        {
+            name: "director",
+            type: "text",
+            label: "Director*",
+            value: movie.director,
+            onChange: (e) => handleInputChange(e),
+            onBlur: (e) => handleBlur(e),
+            minLength: 5,
+            maxLength: 20,
+            required: true,
+            errorMessage: validationErrors.director,
+            lengthLimit: 20,
+            extraContent: <p>{movie.director.trim().length} / 20</p>,
+        },
+        {
+            name: "genre",
+            type: "text",
+            label: "Genre*",
+            value: movie.genre,
+            onChange: (e) => handleInputChange(e),
+            onBlur: (e) => handleBlur(e),
+            minLength: 5,
+            maxLength: 20,
+            required: true,
+            errorMessage: validationErrors.genre,
+            lengthLimit: 20,
+            extraContent: <p>{movie.genre.trim().length} / 20</p>,
+        },
+        {
+            name: "spokenLanguage",
+            type: "select",
+            label: "Spoken Language*",
+            value: movie.spokenLanguage,
+            onChange: (e) => handleInputChange(e),
+            onBlur: (e) => handleBlur(e),
+            required: true,
+            options: [
+                ...(movie.spokenLanguage === "" ? [{ value: "", label: "Select a language", disabled: true }] : []),
+                { value: "CN", label: "Chinese (CN)" },
+                { value: "ENG", label: "English (ENG)" },
+                { value: "ESP", label: "Spanish (ESP)" },
+                { value: "FRA", label: "French (FRA)" },
+                { value: "GER", label: "German (GER)" },
+            ],
+            errorMessage: validationErrors.spokenLanguage,
+        },
+        {
+            name: "subtitles",
+            type: "checkbox",
+            label: "Subtitles*",
+            options: [
+                { value: "CN", label: "Chinese (CN)" },
+                { value: "ENG", label: "English (ENG)" },
+            ],
+            onChange: handleCheckboxChange,
+            value: movie.subtitles,
+            errorMessage: validationErrors.subtitles,
+        },
+        {
+            name: "classification",
+            type: "select",
+            label: "Classification*",
+            value: movie.classification,
+            onChange: (e) => handleInputChange(e),
+            onBlur: (e) => handleBlur(e),
+            required: true,
+            options: [
+                ...(movie.classification === "" ? [{ value: "", label: "Select a classification", disabled: true }] : []),
+                { value: "P3", label: "All Ages (P3)" },
+                { value: "P12", label: "Parental Guidance (P12)" },
+                { value: "P13", label: "Teens (P13)" },
+                { value: "P18", label: "Restricted Viewing (P18)" },
+            ],
+            errorMessage: validationErrors.classification,
+        },
+        {
+            name: "releaseDate",
+            type: "date",
+            label: "Release Date*",
+            value: movie.releaseDate,
+            onChange: (e) => handleInputChange(e),
+            onBlur: (e) => handleBlur(e),
+            min: new Date().toISOString().split("T")[0],
+            required: true,
+            errorMessage: validationErrors.releaseDate,
+        },
+    ];
 
-  return (
-        <div className="modal">
-          <div className="modal-content">
-          
-            <div className='title'>              
-              <h2>
-                <DisplayBreadcrumb path={breadcrumbPath}/>
-              </h2>              
+    return (
+        <div className='modal'>
+            <div className='modal-content'>
+                <div className='title'>
+                    <h2>
+                        <DisplayBreadcrumb path = {breadcrumbPath} />
+                    </h2>
+                </div>
+                <Form fields={fields} onSubmit={handleSubmit} submitBtnLabel="Upload"/>
             </div>
-            <label>
-              Title*
-              <input
-                // ref={inputRef}
-                type="text"
-                name="title"
-                value={movie.title}
-                maxLength = {20}
-                onChange = {(e) => handleInputChange(e)} 
-                onBlur={(e) => handleBlur(e)}
-                required
-                minLength={5}
-              />
-              <div className="input-wrapper">                
-                {validationErrors.title ? (
-                  <span className='error-message'>{validationErrors.title}</span>
-                ):(
-                  <span className='proceed'></span>
-                )}
-                <p> {movie.title.trim().length} / 20</p>
-              </div>
-            </label>
-            <label>
-              Image*
-              <input
-                type="file"
-                name="image"
-                accept='image/jpeg, image/png, image.gif'
-                onChange = {(e) => handleInputChange(e)} 
-                onBlur={(e) => handleBlur(e)}
-                required
-              />
-              <div className="input-wrapper">                
-                {validationErrors.image ? (
-                  <span className='error-message'>{validationErrors.image}</span>
-                ):(
-                  <span className='proceed'></span>
-                )}
-              </div>
-            </label>
-            <label>
-              Running Time*
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '170px',
-                gap: '2px'
-              }}>
-                <input
-                  type="number"
-                  name="runningTimeHours"
-                  value={movie.runningTimeHours}
-                  onChange = {(e) => handleInputChange(e)} 
-                  onBlur={(e) => handleBlur(e)}
-                  required
-                  min={1}
-                  max={23}
-                  placeholder='Hours'
-                />
-                <input
-                  type="number"
-                  name="runningTimeMinutes"
-                  value={movie.runningTimeMinutes}
-                  onChange = {(e) => handleInputChange(e)} 
-                  onBlur={(e) => handleBlur(e)}
-                  min={0}
-                  max={59}
-                  placeholder='Minutes'
-                />
-              </div>
-              <div className="input-wrapper">                
-                {validationErrors.runningTimeHours ? (
-                  <span className='error-message'>{validationErrors.runningTimeHours}</span>
-                ):(
-                  <span className='proceed'></span>
-                )}
-              </div>
-            </label>
-            <label>
-              Cast*
-              <textarea
-                type="text"
-                name="cast"
-                value={movie.cast}
-                maxLength = {200}
-                onChange = {(e) => handleInputChange(e)} 
-                onBlur={(e) => handleBlur(e)}
-                required
-                minLength={10}
-              />
-              <div className="input-wrapper">                
-                {validationErrors.cast ? (
-                  <span className='error-message'>{validationErrors.cast}</span>
-                ):(
-                  <span className='proceed'></span>
-                )}
-                <p> {movie.cast.trim().length} / 200</p>
-              </div>
-            </label> 
-            <label>
-              Synopsis*
-              <textarea
-                type="text"
-                name="synopsis"
-                value={movie.synopsis}
-                maxLength = {1000}
-                onChange = {(e) => handleInputChange(e)} 
-                onBlur={(e) => handleBlur(e)}
-                required
-                minLength={30}
-              />
-              <div className="input-wrapper">                
-                {validationErrors.synopsis ? (
-                  <span className='error-message'>{validationErrors.synopsis}</span>
-                ):(
-                  <span className='proceed'></span>
-                )}
-                <p> {movie.synopsis.trim().length} / 1000</p>
-              </div>
-            </label>
-            <label>
-              Trailer*
-              <input
-                type="text"
-                name="trailer"
-                value={movie.trailer}
-                onChange = {(e) => validateWebsite(e)} 
-                // onBlur={(e) => validateWebsite(e)}
-                required
-                maxLength={50}
-              />
-              <div className="input-wrapper">                
-                {validationErrors.trailer ? (
-                  <span className='error-message'>{validationErrors.trailer}</span>
-                ):(
-                  <span className='proceed'></span>
-                )}
-                <p> {movie.trailer.trim().length} / 50</p>
-              </div>
-            </label>
-            <label>
-              Director*
-              <input
-                type="text"
-                name="director"
-                value={movie.director}
-                maxLength={20}
-                onChange={(e) => handleInputChange(e)}
-                onBlur={(e) => handleBlur(e)}
-                required
-                minLength={5}
-              />
-              <div className="input-wrapper">                
-                {validationErrors.director ? (
-                  <span className='error-message'>{validationErrors.director}</span>
-                ):(
-                  <span className='proceed'></span>
-                )}
-                <p> {movie.director.trim().length} / 20</p>
-              </div>
-            </label>
-            <label>
-              Genre*
-              <input
-                type="text"
-                name="genre"
-                value={movie.genre}
-                maxLength={20}
-                onChange={(e) => handleInputChange(e)}
-                onBlur = {(e) => handleBlur(e)}
-                required
-                minLength={5}
-              />
-              <div className="input-wrapper">                
-                {validationErrors.genre ? (
-                  <span className='error-message'>{validationErrors.genre}</span>
-                ):(
-                  <span className='proceed'></span>
-                )}
-                <p> {movie.genre.trim().length} / 20</p>
-              </div>
-            </label>
-            <label>
-              Spoken Language*
-              <select
-                name="spokenLanguage"
-                value={movie.spokenLanguage}
-                onChange={(e) => handleInputChange(e)}
-                onBlur = {(e) => handleBlur(e)}
-                required
-              >
-                <option value="" disabled>Select a language</option>
-                <option value="CN">Chinese (CN)</option>
-                <option value="ENG">English (ENG)</option>
-                <option value="ESP">Spanish (ESP)</option>
-                <option value="FRA">French (FRA)</option>
-                <option value="GER">German (GER)</option>
-              </select>
-              <div className="input-wrapper">                
-                {validationErrors.spokenLanguage ? (
-                  <span className='error-message'>{validationErrors.spokenLanguage}</span>
-                ):(
-                  <span className='proceed'></span>
-                )}
-              </div>
-            </label>
-            <label>
-              Subtitles*
-              <div  
-                className='checkbox-group'
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  margin: '5px 0',
-                }}
-              >
-                {["CN", "ENG"].map((language) => (
-                  <label key={language} style={{display: 'flex', alignItems: 'center'}}>
-                    <input  
-                      type='checkbox'
-                      name="subtitles"
-                      value={language}
-                      onChange={(e) => handleInputChange(e)}
-                      onBlur = {(e) => handleBlur(e)}
-                      checked={movie.subtitles.includes(language)}
-                      required
-                    />
-                    {language === "CN" && "Chinese (CN)"}
-                    {language === "ENG" && "English (ENG)"}
-                    </label>
-                ))}
-              </div>
-              <div className="input-wrapper" >                
-                <span className="error-message">
-                  {validationErrors.subtitles ? (
-                    validationErrors.subtitles
-                  ) : (
-                    <span className='proceed'></span>
-                  )}
-                </span>
-              </div>
-            </label>
-            <label>
-              Classification*
-              <select
-                name="classification"
-                value={movie.classification}
-                onChange={(e) => handleInputChange(e)}
-                onBlur = {(e) => handleBlur(e)}
-                required
-              >
-                <option value="" disabled>Select a classification</option>
-                <option value="P3">All Ages (P3)</option>
-                <option value="P12">Parental Guidance (P12)</option>
-                <option value="P13">Teens (P13)</option>
-                <option value="P18">Restricted Viewing (P18)</option>
-              </select>
-              <div className="input-wrapper">                
-                {validationErrors.classification ? (
-                  <span className='error-message'>{validationErrors.classification}</span>
-                ):(
-                  <span className='proceed'></span>
-                )}
-              </div>
-            </label>
-            <label>
-              Release Date*
-              <input
-                type="date"
-                name="releaseDate"
-                value={movie.releaseDate}
-                onChange={(e) => handleInputChange(e)}
-                onBlur={(e) => handleBlur(e)}
-                required
-                //set today's date as the minimum
-                min={new Date().toISOString().split("T")[0]}
-              />
-              <div className="input-wrapper" >                
-                {validationErrors.releaseDate ? (
-                  <span className='error-message'>{validationErrors.releaseDate}</span>
-                ):(
-                  <span className='proceed'></span>
-                )}
-              </div>
-            </label>
-            <div className="modal-actions">
-              <button onClick={handleSubmit} disabled={!isFormValid()}>Upload</button>
-            </div>
-          </div>
         </div>
-  );
-};
+    )
+}
 
-CreateMovie.propTypes = {
-  onAddMovie: PropTypes.func,
-};
-
-export default CreateMovie;
+export default CreateMovie

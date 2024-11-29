@@ -21,155 +21,73 @@
         }
         
       }
+
+      textarea {
+        box-sizing: border-box;
+        overflow-y: auto;
+        min-height: 100px;
+        max-height: 400px;
+        transition: height 0.2s ease;
+        background-color: #f4f4f4;
+        scrollbar-width: thin;
+        scrollbar-color: #ce9b57 #f4f4f4;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13.3333px;
+      }
       
-      label {
-        display: block;
-        margin: 20px 0;
-        font-size: 14px;
-        color: #ce9b57;
+      textarea::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      textarea::-webkit-scrollbar-track {
+        background: #f4f4f4;
+        border-radius: 5px;
+      }
+      
+      textarea::-webkit-scrollbar-thumb {
+        background: #ce9b57;
+        border-radius: 5px;
+      }
+      
+      textarea::-webkit-scrollbar-thumb:hover {
+        background: #b6884c;
+      }
+      
 
-        input[type="file"]::-webkit-file-upload-button {
-          cursor: pointer;
-          padding: 6px 12px;
-          background-color: #ce9b57;
-          color: white;
-          border: 1px solid #ce9b57;
-          border-radius: 4px;
-        }
-        
-        input[type="file"]::-webkit-file-upload-button:hover {
-          background-color: #b6884c;
-          border-color: #b6884c;
-        }
+      .checkbox-group{
+        display: flex;
+        flex-direction: column;
+        margin: 10px 0;  
 
-        input,
-        select,
-        textarea {
-          width: 99.5%;
-          padding: 8px;
-          margin-top: 10px;
-          border: 1px solid #fff;
-          border-radius: 5px;
-          margin-left: 1px;  
-          margin-right: 1px;            
-        }
-
-        textarea{
-          box-sizing: border-box; // Includes padding and border in width/height calculations
-          overflow-y: auto; 
-          min-height: 100px; // Minimum height for better visibility
-          max-height: 400px; // Optional: Limit the height if needed
-          transition: height 0.2s ease; // Smooth height adjustment
-          background-color: #f4f4f4; // Light background for better contrast
-          scrollbar-width: thin; // For Firefox, reduces scrollbar thickness
-          scrollbar-color: #ce9b57 #f4f4f4; 
-          font-family: Arial, Helvetica, sans-serif;
-          font-size: 13.3333px;
-          &::-webkit-scrollbar {
-            width: 8px; // Custom scrollbar width
-          }
-
-          &::-webkit-scrollbar-track {
-            background: #f4f4f4; // Track background
-            border-radius: 5px; // Smooth edges
-          }
-
-          &::-webkit-scrollbar-thumb {
-            background: #ce9b57; // Thumb color
-            border-radius: 5px; // Rounded corners
-          }
-
-          &::-webkit-scrollbar-thumb:hover {
-            background: #b6884c; // Darker thumb on hover
-          }
-        }
-
-        .checkbox-group{
+        label{
           display: flex;
-          flex-direction: column;
-          margin: 10px 0;  
-
-          label{
-            display: flex;
-            align-items: center;
-            margin: 1px 0;
-            cursor: pointer;
-
-              input[type="checkbox"]{
-                // margin-right: 10px;
-                margin: 5px 10px 5px 1px;
-                width: 18px;
-                height: 18px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                appearance: none;
-                cursor: pointer;
-                
-                outline: none;
-                transition: background-color 0.2s ease, border-color 0.2s ease;
-                &:checked {
-                  background-color: #ce9b57; // Customize the color
-                  border-color: #ce9b57; // Match the background color
-                  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M6.173 12.166l-3.613-3.612L4.56 7.588l1.613 1.613 4.76-4.76 1.573 1.573-6.333 6.333z'/%3E%3C/svg%3E");
-                  background-size: 75%;
-                  background-repeat: no-repeat;
-                  background-position: center;
-                }
-              }   
-              &:hover input[type="checkbox"]{
-                border-color: #ce9b57;
-              }           
-          }
-        }
-      }
-
-      .input-wrapper{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 99.5%;
-        margin: 1px 0;
-        min-height: 19px;
-        p{
-          font-size: smaller;
-          flex: end;
-          margin-top: 3px;
-        }
-
-        span.error-message{
-          color: #c82333;
-        }
-      }
-
-      .modal-actions {
-        margin-top: 30px;
-        display: flex;
-        justify-content: space-between;
-        background-color: transparent;
-
-        button {
-          padding: 12px 20px;
-          border: none;
-          border-radius: 5px;
+          align-items: center;
+          margin: 1px 0;
           cursor: pointer;
-          font-size: 14px;
-          
-          &:first-child {
-            background-color: #ce9b57;
-            color: white;
-            font-weight: bold;
 
-            &:disabled {
-              opacity: 0.5;
-              cursor: not-allowed;
+          input[type="checkbox"]{
+            margin: 5px 10px 5px 1px;
+            width: 18px;
+            height: 18px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            appearance: none;
+            cursor: pointer;                
+            outline: none;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            &:checked {
+              background-color: #ce9b57; // Customize the color
+              border-color: #ce9b57; // Match the background color
+              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M6.173 12.166l-3.613-3.612L4.56 7.588l1.613 1.613 4.76-4.76 1.573 1.573-6.333 6.333z'/%3E%3C/svg%3E");
+              background-size: 75%;
+              background-repeat: no-repeat;
+              background-position: center;
             }
-            
-            &:hover {
-              background-color: #b6884c;
-            }
-          }
+          }   
+          &:hover input[type="checkbox"]{
+            border-color: #ce9b57;
+          }           
         }
       }
-
     }
   }

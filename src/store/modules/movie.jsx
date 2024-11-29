@@ -10,11 +10,14 @@ const movieStore = createSlice({
     setMovie: (state, action) => {
       state.movie = action.payload; // Set movie data
     },
+    createMovie: (state, action) =>{
+      state.movie = action.payload;
+    },
   },
 });
 
 const movieReducer = movieStore.reducer
-
-
-export const { setMovie } = movieStore.actions;
 export default movieReducer;
+
+export const { setMovie, createMovie } = movieStore.actions;
+
